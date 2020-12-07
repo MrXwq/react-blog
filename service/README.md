@@ -36,3 +36,6 @@ $ npm stop
 
 package的名字必须打上。。。不然启动不了
 git pull --rebase origin main 把仓库里的合并
+restful风格接口，简易、有约束性
+以前基本都是get、post
+现在get post put delete 以请求方式进行约束 
