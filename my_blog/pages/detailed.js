@@ -22,9 +22,18 @@ import "markdown-navbar/dist/navbar.css"
 import marked from 'marked'
 import hljs from 'highlight.js'
 import "highlight.js/styles/monokai-sublime.css"
+import Tocify from "../components/tocify.tsx"
+
+import servicePath from "../config/apiUrl"
 
 const Detail = (props) => {
+  const tocify = new Tocify()
   const renderer = new marked.Renderer()
+  renderer.heading = function (text, level, row) {
+    const anchor = tocify.add(text, level)
+    return `<a id="${anchor}" href="#${anchor}" class="anchor-fix"><h${level}>${text}</h${level}></a>\n`
+  }
+
   marked.setOptions({
     renderer: renderer,
     gfm: true, // 和github一样渲染 
@@ -77,10 +86,11 @@ const Detail = (props) => {
               <div className="nav-title">
                 文章目录
             </div>
-              <MarkNav
+              {tocify && tocify.render()}
+              {/* <MarkNav
                 className="article-menu"
                 ordered={false}
-              ></MarkNav>
+              ></MarkNav> */}
               {/* <MarkNav
                 className="article-menu"
                 source={markdown}
@@ -97,8 +107,7 @@ const Detail = (props) => {
 Detail.getInitialProps = async (context) => {
   let id = context.query.id
   const promise = new Promise((resolve) => {
-    axios(`http://127.0.0.1:7001/default/article_content/${id}`).then(res => {
-      console.log(res.data.data, "resresresres")
+    axios(`${servicePath.article_content}${id}`).then(res => {
       resolve(res.data.data[0])
     })
   })
