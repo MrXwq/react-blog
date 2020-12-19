@@ -6,7 +6,8 @@ class HomeController extends Controller {
   async index() {
     this.ctx.body = 'hi';
   }
-  async getArticleList() {
+  // 得到文章列表数据
+  async getAllArticleList() {
     const sql = `SELECT article.id as id,
               article.title as title,
               article.introduce as introduce,
@@ -20,6 +21,7 @@ class HomeController extends Controller {
       data: results,
     };
   }
+  // 得到某篇文章内容
   async getArticleById() {
     const id = this.ctx.params.id;
     const sql = `SELECT article.id as id,
@@ -34,7 +36,30 @@ class HomeController extends Controller {
     WHERE article.id = ${id}
 `;
     const results = await this.app.mysql.query(sql);
-    console.log(results, 'resultsresultsresults');
+    this.ctx.body = {
+      data: results,
+    };
+  }
+  // 得到类别名称和编号
+  async getTypeInfo() {
+    const results = await this.app.mysql.select('type');
+    this.ctx.body = {
+      data: results,
+    };
+  }
+  // 根据类别获得文章列表
+  async getListById() {
+    const id = this.ctx.params.id;
+    const sql = `SELECT article.id as id,
+              article.title as title,
+              article.introduce as introduce,
+              FROM_UNIXTIME(article.addTime,'%Y:%m:%d %H:%i:%s')  as addTime,
+              article.view_count as view_count,
+              type.typeName as typeName
+              FROM article LEFT JOIN type ON article.type_id = type.Id
+              WHERE type_id=${id}
+    `;
+    const results = await this.app.mysql.query(sql);
     this.ctx.body = {
       data: results,
     };

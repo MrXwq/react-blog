@@ -9,13 +9,13 @@
 // };
 
 
-// 所有的插件或者外置配置都需要配置到这里面 
+// 所有的插件或者外置配置都需要配置到这里面
 
 exports.mysql = {
   enable: true,
-  package: 'egg-mysql'
-}
+  package: 'egg-mysql',
+};
 exports.cors = {
   enable: true,
-  package: 'egg-cors'
-}
+  package: 'egg-cors',
+};
