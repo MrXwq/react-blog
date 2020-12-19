@@ -48,14 +48,15 @@ module.exports = appInfo => {
     agent: false,
   };
   config.security = {
-    scrf: {
+    csrf: {
       enable: false,
     },
-    domainWhiteList: [ '*' ],
+    domainWhiteList: [ 'http://127.0.0.1:3001', 'http://127.0.0.1:3000' ],
 
   };
   config.cors = {
-    origin: '*',
+    // origin: 'http://localhost:3001',
+    credentials: true, // 允许Cookies共享 也就是session可以共享 session也就是cookies的一种
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
   };
   return {
